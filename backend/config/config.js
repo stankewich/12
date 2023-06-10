@@ -12,7 +12,7 @@ module.exports = {
     database: "conduit",
     host: "postgres",
     dialect: "postgres"
-},
+  },
   production: {
     username: process.env.PG_USER,
     password: process.env.PG_PASSWORD,

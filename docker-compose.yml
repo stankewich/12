@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15.2-bullseye
+    environment:
+      - POSTGRES_PASSWORD=zyxxyz
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      retries: 15
+      start_period: 2s
+      timeout: 10s
+
+  conduit:
+    build: ./
+    ports:
+      - 8080:80
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=test
+      - JWT_KEY=secret
+    healthcheck:
+      test: curl --fail http://localhost || exit 1
+      interval: 10s
+      retries: 15
+      start_period: 2s
+      timeout: 10s
+
+  cypress:
+    image: cypress/included:12.5.1
+    depends_on:
+      conduit:
+        condition: service_healthy
+    environment:
+      - CYPRESS_baseUrl=http://conduit:80
+    working_dir: /e2e
+    volumes:
+      - ./cypress.config.js:/e2e/cypress.config.js
+      - ./cypress:/e2e/cypress
