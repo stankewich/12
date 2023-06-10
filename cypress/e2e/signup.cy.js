@@ -17,7 +17,7 @@ describe('Sign up', () => {
         cy.get('@appHeader').find('a[href$="/register"]').click();
         cy.url().should('include', '/#/register');
 
-        cy.get('.auth-page').as('registerPage');
+        cy.get('.auth-page').as('signupPage');
         cy.get('@registerPage').find('h1').should('have.text', 'Sign up');
         cy.get('@registerPage').find('form').should('be.visible').as('signupForm');
         cy.get('@signupForm').find('input[name=username]').type('test');
