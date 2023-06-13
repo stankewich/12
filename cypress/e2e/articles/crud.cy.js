@@ -142,7 +142,7 @@ describe('Articles', () => {
             .should('have.length', 0);
     });
 
-    it.only('should do edit article', () => {
+    it('should do edit article', () => {
 
         const article = addArticle();
 
