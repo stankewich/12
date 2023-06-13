@@ -1,10 +1,15 @@
 describe('Sign up', () => {
 
     before(() => {
-        cy.request({ method: 'POST', url: '/api/db/undo' })
-            .its('status').should('eq', 200);
-        cy.request({ method: 'POST', url: '/api/db/seed' })
-            .its('status').should('eq', 200);
+
+        cy.exec('npx -w backend sequelize-cli db:seed:undo:all') // this is for local machine run
+            .its('code').should('eq', 0); //local machine run
+        // cy.request({ method: 'POST', url: '/api/db/undo' }) this is for CI/CD
+        // .its('status').should('eq', 200); // CI/CD
+        cy.exec('npx -w backend sequelize-cli db:seed:all') //local run
+            .its('code').should('eq', 0);
+        // cy.request({ method: 'POST', url: '/api/db/seed' }) //CI/CD
+        // .its('status').should('eq', 200);
     });
 
     beforeEach(() => {

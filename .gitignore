@@ -1,3 +1,7 @@
 node_modules
 cypress/videos
 cypress/screenshots
+backend/.env
+test_cases
+cypress/e2e/signup2.spec.js
+cypress/e2e/articles2

@@ -25,41 +25,41 @@ app.use(express.json());
 })();
 
  // RPC for Cypress
- if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
-   const { exec } = require("child_process");
+//  if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
+//    const { exec } = require("child_process");
 
-   function runInShell(command) {
-     const shell = exec(command);
-     let stdout = '', stderr = '';
-     shell.stdout.on("data", data => stdout += data);
-     shell.stderr.on("data", data => stderr += data);
-     return new Promise((done, err) => {
-       shell.addListener("close", code => {
-         console.log("done", code, stdout, stderr);
-         if (code === 0) {
-           done(stdout);
-         } else {
-           err(stderr);
-         }
-       });
-     });
-   }
+//    function runInShell(command) {
+//      const shell = exec(command);
+//      let stdout = '', stderr = '';
+//      shell.stdout.on("data", data => stdout += data);
+//      shell.stderr.on("data", data => stderr += data);
+//      return new Promise((done, err) => {
+//        shell.addListener("close", code => {
+//          console.log("done", code, stdout, stderr);
+//          if (code === 0) {
+//            done(stdout);
+//          } else {
+//            err(stderr);
+//          }
+//        });
+//      });
+//    }
 
-   app.post("/api/db/undo", async (req, res) => {
-     runInShell("npx sequelize-cli db:seed:undo:all")
-       .then(out => res.status(200).send(out))
-       .catch(err => res.status(500).send(err));
-   });
+//    app.post("/api/db/undo", async (req, res) => {
+//      runInShell("npx sequelize-cli db:seed:undo:all")
+//        .then(out => res.status(200).send(out))
+//        .catch(err => res.status(500).send(err));
+//    });
 
-   app.post("/api/db/seed", (req, res) => {
-     runInShell("npx sequelize-cli db:seed:all")
-       .then(out => res.status(200).send(out))
-       .catch(err => res.status(500).send(err));
-   });
- }
+//    app.post("/api/db/seed", (req, res) => {
+//      runInShell("npx sequelize-cli db:seed:all")
+//        .then(out => res.status(200).send(out))
+//        .catch(err => res.status(500).send(err));
+//    });
+//  }
 
-
- if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "test") {
+if (process.env.NODE_ENV === "production") { //local run
+//  if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "test") { //CI/CD
   app.use(express.static("../frontend/build"));
 } else {
   app.get("/", (req, res) => res.json({ status: "API is running on /api" }));
