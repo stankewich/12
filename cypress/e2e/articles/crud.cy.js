@@ -22,7 +22,7 @@ function clearArticle() {
     cy.get('@editArticleForm').find('input[name=description]').clear();
     cy.get('@editArticleForm').find('textarea[name=body]').clear();
     cy.get('@editArticleForm').find('input[name=tags]').clear();
-    
+
 }
 
 function fillArticle() {
@@ -107,6 +107,14 @@ function openMyArticle(article) {
 }
 
 describe('Articles', () => {
+
+    before(() => {
+
+        cy.request({ method: 'POST', url: '/api/db/undo' })
+            .its('status').should('eq', 200);
+        cy.request({ method: 'POST', url: '/api/db/seed' })
+            .its('status').should('eq', 200);
+    });
 
     beforeEach(() => {
         cy.visit('/');
